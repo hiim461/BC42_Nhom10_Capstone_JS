@@ -19,6 +19,7 @@ function getProducts() {
           product.type
         );
       });
+      renderProducts(products);
       console.log(response.data);
     })
     .catch((error) => {
@@ -26,6 +27,7 @@ function getProducts() {
       alert("API get products error");
     });
 }
+
 getProducts();
 
 //=========Helpers==========
