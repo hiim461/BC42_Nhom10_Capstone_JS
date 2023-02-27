@@ -19,7 +19,7 @@ function getProducts() {
           product.type
         );
       });
-      renderProducts(products);
+      // renderProducts(products);
       console.log(response.data);
     })
     .catch((error) => {
