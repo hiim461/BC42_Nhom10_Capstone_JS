@@ -1,0 +1,12 @@
+
+.nav2 {
+  display: flex;
+}
+#navbarNavAltMarkup{
+    justify-content: space-between;
+}
+header{
+  &.container{
+    padding: 25px;
+  }
+}

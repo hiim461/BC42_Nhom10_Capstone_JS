@@ -16,8 +16,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
 }
-
-.homeEffect {
+.home .homeEffect {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,27 +32,23 @@ body {
   transition: 1s box-shadow;
   padding: 20px;
 }
-
-a {
+.home a {
   text-decoration: none;
 }
-
-h1 {
-  color: yellow;
+.home h1 {
+  color: rgba(255, 60, 60, 0.9215686275);
 }
-
-.container {
+.home .container {
   margin-top: 200px;
 }
-
-.pic:hover h1 {
+.home .pic:hover h1 {
   color: white;
 }
-.pic:hover .homeEffect {
+.home .pic:hover .homeEffect {
   background: white;
   box-shadow: 0 5px 35px 0px rgba(225, 212, 212, 0.1);
 }
-.pic:hover .homeEffect::before, .pic:hover .homeEffect::after {
+.home .pic:hover .homeEffect::before, .home .pic:hover .homeEffect::after {
   display: block;
   content: "";
   position: absolute;
@@ -64,20 +59,19 @@ h1 {
   z-index: -1;
   animation: 1s clockwise infinite;
 }
-.pic:hover .homeEffect::after {
+.home .pic:hover .homeEffect::after {
   background: #f3ce5e;
   animation: 2s counterclockwise infinite;
 }
-.pic:hover .underline-hover-effect::before {
+.home .pic:hover .underline-hover-effect::before {
   width: 100%;
 }
-
-.underline-hover-effect {
+.home .underline-hover-effect {
   display: inline-block;
   padding-bottom: 0.25rem; /* defines the space between text and underline */
   position: relative;
 }
-.underline-hover-effect::before {
+.home .underline-hover-effect::before {
   content: "";
   position: absolute;
   left: 0;
@@ -87,7 +81,6 @@ h1 {
   background-color: white;
   transition: width 0.25s ease-out;
 }
-
 @keyframes clockwise {
   0% {
     top: -5px;
@@ -163,4 +156,16 @@ h1 {
     top: -5px;
     right: 0;
   }
+}
+
+.nav2 {
+  display: flex;
+}
+
+#navbarNavAltMarkup {
+  justify-content: space-between;
+}
+
+header.container {
+  padding: 25px;
 }/*# sourceMappingURL=styles.css.map */
