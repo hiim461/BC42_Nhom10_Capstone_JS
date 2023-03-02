@@ -16,13 +16,18 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="/admin/asset/css/styles.css" />
   </head>
-  <body>
+  <body style="background-image: url(./admin/asset/img/bg01.jpg);" class="home">
     <div class="container d-lg-flex justify-content-around">
       <a href="./admin/views/admin.html">
         <div class="text-center pic">
           <div class="homeEffect">
-            <img src="./admin/asset/img/img_325788.png" alt="admin" class="img-fluid">
+            <img
+              src="./admin/asset/img/admin.png"
+              alt="admin"
+              class="img-fluid"
+            />
           </div>
           <h1 class="underline-hover-effect">Admin Page</h1>
         </div>
@@ -31,12 +36,15 @@
       <a href="./customer/views/store.html">
         <div class="text-center pic">
           <div class="homeEffect">
-            <img src="./admin/asset/img/263142.png" alt="store" class="img-fluid">
+            <img
+              src="./admin/asset/img/shopping.png"
+              alt="store"
+              class="img-fluid"
+            />
           </div>
           <h1 class="underline-hover-effect">Store Page</h1>
         </div>
       </a>
-
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -56,7 +64,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    
+
     <script src="./admin/models/Products.js"></script>
     <script src="./admin/services/productAPI.js"></script>
     <script src="./admin/controllers/main.js"></script>
