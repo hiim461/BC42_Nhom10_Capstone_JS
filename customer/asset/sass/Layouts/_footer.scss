@@ -1,0 +1,12 @@
+.gradient-custom {
+    background: $color-bg;
+}
+.form__footer {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin-top: 24px;
+}
+.first {
+    order: 1;
+}
