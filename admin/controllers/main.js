@@ -28,6 +28,7 @@ async function getProducts(searchValue) {
 
 //Hàm thêm sản phẩm : DOM và gửi yêu cầu thêm sản phẩm tới API
 async function createProduct() {
+  
   const product = {
     name: getElement("#name").value,
     price: getElement("#price").value,
@@ -317,7 +318,7 @@ function resetTB() {
   getElement("#frontCamera").value = "";
   getElement("#image").value = "";
   getElement("#description").value = "";
-  getElement("#type").value = "";
+  getElement("#type").value = "type";
 }
 getProducts();
 
