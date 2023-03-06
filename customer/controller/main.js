@@ -2,7 +2,7 @@ const getEle = (id) => document.getElementById(id);
 
 import { Service } from "../services/phoneService.js";
 import { CartItem } from "../models/cartItem.js";
-import { Product } from "../models/product.js";
+import { Product } from "../models/Product.js";
 
 const service = new Service();
 let cart = [];
