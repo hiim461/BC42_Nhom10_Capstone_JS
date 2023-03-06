@@ -1,6 +1,6 @@
 //Hàm gửi yêu cầu lấy danh sách sản phẩm từ API
-function getProducts(searchValue) {
-  apiGetProducts()
+async function getProducts(searchValue) {
+  apiGetProducts(searchValue)
     .then((response) => {
       //Call API thành công
       const products = response.data.map((product) => {
@@ -18,6 +18,7 @@ function getProducts(searchValue) {
       });
       renderProducts(products);
       console.log(response.data);
+      // console.log(response.data[2].name);
     })
     .catch((error) => {
       //callAPI thất bại
@@ -26,7 +27,7 @@ function getProducts(searchValue) {
 }
 
 //Hàm thêm sản phẩm : DOM và gửi yêu cầu thêm sản phẩm tới API
-function createProduct() {
+async function createProduct() {
   const product = {
     name: getElement("#name").value,
     price: getElement("#price").value,
@@ -37,10 +38,25 @@ function createProduct() {
     description: getElement("#description").value,
     type: getElement("#type").value,
   };
+  //validate
+  let products = apiGetProducts()
+    .then((respone) => {
+      return respone.data;
+    })
+    .catch((error) => {
+      //callAPI thất bại
+      // alert("API get products error");
+    });
+  let isValid = await validate(products);
+  if (!isValid) {
+    return;
+  }
 
-  apiCreateProduct(product)
+  await apiCreateProduct(product)
     .then((respone) => {
       getProducts();
+      resetTB();
+      alert("Add phone successfully");
     })
     .catch((error) => {
       alert("Thêm sản phẩm thất bại");
@@ -52,6 +68,8 @@ function deleteProduct(productId) {
   apiDeleteProduct(productId)
     .then((respone) => {
       getProducts();
+      resetTB();
+      alert("Delete phone successfully  ");
     })
     .catch((error) => {
       alert("Xóa sản phẩm thất bại");
@@ -74,7 +92,7 @@ function selectProduct(productId) {
 
       //Mở và cập nhật  lại giao diện cho modal
       getElement(".modal-footer").innerHTML = `
-    <button class="btn btn-warning" data-dismiss="modal" onclick="updateProduct('${product.id}')">Update Phone</button>
+    <button class="btn btn-warning" onclick="updateProduct('${product.id}')">Update Phone</button>
     <button class="btn btn-secondary" data-dismiss="modal">Close</button>
     `;
       $("#myModal").modal("show");
@@ -85,7 +103,7 @@ function selectProduct(productId) {
 }
 
 //Hàm cập nhật sản phẩm
-function updateProduct(productId) {
+async function updateProduct(productId) {
   const product = {
     name: getElement("#name").value,
     price: getElement("#price").value,
@@ -96,9 +114,28 @@ function updateProduct(productId) {
     description: getElement("#description").value,
     type: getElement("#type").value,
   };
+
+  //validate
+  let products = await apiGetProducts()
+    .then((respone) => {
+      return respone.data;
+    })
+    .catch((error) => {
+      //callAPI thất bại
+      // alert("API get products error");
+    });
+  let isValid = await validate(products, productId);
+  if (!isValid) {
+    return;
+  }
+
+  console.log(productId);
+
   apiUpdateProduct(productId, product)
     .then((respone) => {
       getProducts();
+      resetTB();
+      alert("Update phone successfully");
     })
     .catch((error) => {
       alert("Cập nhật sản phẩm thất bại");
@@ -116,7 +153,7 @@ function renderProducts(products) {
       <td>${product.name}</td>
       <td>${product.price}</td>
       <td style="text-align: center">
-      <img scr="${product.img}" width="79" height="79">
+      <img src="${product.img}" width="79" height="79">
       </td>
       <td>${product.description}</td>
       <td>
@@ -134,12 +171,162 @@ function renderProducts(products) {
   document.getElementById("tblDanhSachSP").innerHTML = html;
 }
 
+// Validate
+
+
+async function validate(products, productId) {
+  let isValid = true;
+
+  //Validate name
+  let name = getElement("#name").value;
+  // await products.then(function (result) {
+  //   for (let i = 0; i < result.length; i++) {
+  //     // console.log(result[i].name);
+  //     if (result[i].name.trim() == name.trim()) {
+  //       getElement("#tbName").innerHTML = "(*)This phone already exist";
+  //       return false;
+  //     }
+  //   }
+  // });
+  // let tbName = getElement("#tbName").innerHTML;
+  // console.log(tbName);
+  // if (tbName == "(*)This phone already exist" || tbName.trim() == "") {
+  //   isValid = false;
+  // }
+  // console.log(isValid);
+  const arrProducts = await products;
+  // console.log();
+
+  for (let i = 0; i < arrProducts.length; i++) {
+    //
+    if (arrProducts[i].name.toLowerCase() === name.toLowerCase()) {
+      if (i == productId) {
+        getElement("#tbName").innerHTML = "&zwj;";
+      } else {
+        isValid = false;
+        // console.log(name);
+        getElement("#tbName").innerHTML = "(*)This phone already exist";
+      }
+    }
+  }
+  let tbName = getElement("#tbName").innerHTML;
+  // console.log(tbName);
+  if (tbName != "(*)This phone already exist") {
+    if (!name.trim()) {
+      isValid = false;
+      getElement("#tbName").innerHTML = "(*)This field can't be empty";
+    } else {
+      getElement("#tbName").innerHTML = "&zwj;";
+    }
+  }
+
+  // // if(!isValid){
+
+  // // }
+
+  // console.log(isValid);
+  // // console.log(name);
+  // if (!name.trim()) {
+  //   isValid = false;
+  //   getElement("#tbName").innerHTML = "(*)This field can't be empty";
+  // } else {
+  //   getElement("#tbName").innerHTML = "&zwj;";
+  // }
+
+  //Validate price
+  let price = getElement("#price").value;
+  if (!price.trim()) {
+    isValid = false;
+    getElement("#tbPrice").innerHTML = "(*)This field can't be empty";
+  } else if (!/^[0-9]*$/.test(price)) {
+    isValid = false;
+    getElement("#tbPrice").innerHTML = "(*)Price must be a number";
+  } else {
+    getElement("#tbPrice").innerHTML = "&zwj;";
+  }
+
+  //Validate screen
+  let screen = getElement("#screen").value;
+  if (!screen.trim()) {
+    isValid = false;
+    getElement("#tbScreen").innerHTML = "(*)This field can't be empty";
+  } else {
+    getElement("#tbScreen").innerHTML = "&zwj;";
+  }
+
+  //Validate backCamera
+  let backCamera = getElement("#backCamera").value;
+  if (!backCamera.trim()) {
+    isValid = false;
+    getElement("#tbBackCamera").innerHTML = "(*)This field can't be empty";
+  } else {
+    getElement("#tbBackCamera").innerHTML = "&zwj;";
+  }
+
+  //Validate frontCamera
+  let frontCamera = getElement("#frontCamera").value;
+  if (!frontCamera.trim()) {
+    isValid = false;
+    getElement("#tbFrontCamera").innerHTML = "(*)This field can't be empty";
+  } else {
+    getElement("#tbFrontCamera").innerHTML = "&zwj;";
+  }
+
+  //Validate image
+  let image = getElement("#image").value;
+  if (!image.trim()) {
+    isValid = false;
+    getElement("#tbImage").innerHTML = "(*)This field can't be empty";
+  } else {
+    getElement("#tbImage").innerHTML = "&zwj;";
+  }
+
+  //Validate description
+  let description = getElement("#description").value;
+  if (!description.trim()) {
+    isValid = false;
+    getElement("#tbDescription").innerHTML = "(*)This field can't be empty";
+  } else {
+    getElement("#tbDescription").innerHTML = "&zwj;";
+  }
+
+  //Validate type
+  let type = getElement("#type").value;
+  if (type == "type") {
+    isValid = false;
+    getElement("#tbType").innerHTML = "(*)Please select one option";
+  } else {
+    getElement("#tbType").innerHTML = "&zwj;";
+  }
+
+  return isValid;
+}
+
+//Hàm reset giá trị input
+function resetTB() {
+  getElement("#tbName").innerHTML = "&zwj;";
+  getElement("#tbPrice").innerHTML = "&zwj;";
+  getElement("#tbScreen").innerHTML = "&zwj;";
+  getElement("#tbBackCamera").innerHTML = "&zwj;";
+  getElement("#tbFrontCamera").innerHTML = "&zwj;";
+  getElement("#tbImage").innerHTML = "&zwj;";
+  getElement("#tbDescription").innerHTML = "&zwj;";
+  getElement("#tbType").innerHTML = "&zwj;";
+  getElement("#name").value = "";
+  getElement("#price").value = "";
+  getElement("#screen").value = "";
+  getElement("#backCamera").value = "";
+  getElement("#frontCamera").value = "";
+  getElement("#image").value = "";
+  getElement("#description").value = "";
+  getElement("#type").value = "";
+}
 getProducts();
 
 //==========DOM=========
 getElement("#btnThemSP").addEventListener("click", () => {
   getElement(".modal-footer").innerHTML = `
-  <button class="btn btn-primary" onclick="createProduct()" data-dismiss="modal">Add Phone</button>
+  <button class="btn btn-primary" onclick="createProduct()">Add Phone</button>
   <button class="btn btn-warning" data-dismiss="modal">Close</button> 
   `;
 });

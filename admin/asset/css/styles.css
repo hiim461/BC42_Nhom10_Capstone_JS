@@ -158,6 +158,10 @@ body {
   }
 }
 
+.sp-thongbao {
+  color: red;
+}
+
 .nav2 {
   display: flex;
 }
