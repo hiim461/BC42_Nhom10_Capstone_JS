@@ -173,7 +173,6 @@ function renderProducts(products) {
 
 // Validate
 
-
 async function validate(products, productId) {
   let isValid = true;
 
@@ -196,11 +195,10 @@ async function validate(products, productId) {
   // console.log(isValid);
   const arrProducts = await products;
   // console.log();
-
+  console.log(productId);
   for (let i = 0; i < arrProducts.length; i++) {
-    //
-    if (arrProducts[i].name.toLowerCase() === name.toLowerCase()) {
-      if (i == productId) {
+    if (arrProducts[i].name.toLowerCase() == name.toLowerCase()) {
+      if (arrProducts[i].id == productId) {
         getElement("#tbName").innerHTML = "&zwj;";
       } else {
         isValid = false;
