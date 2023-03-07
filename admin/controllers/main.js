@@ -28,7 +28,6 @@ async function getProducts(searchValue) {
 
 //Hàm thêm sản phẩm : DOM và gửi yêu cầu thêm sản phẩm tới API
 async function createProduct() {
-  
   const product = {
     name: getElement("#name").value,
     price: getElement("#price").value,
@@ -57,7 +56,8 @@ async function createProduct() {
     .then((respone) => {
       getProducts();
       resetTB();
-      alert("Add phone successfully");
+      showAlert("Add phone successfully");
+      closePopUp();
     })
     .catch((error) => {
       alert("Thêm sản phẩm thất bại");
@@ -70,7 +70,8 @@ function deleteProduct(productId) {
     .then((respone) => {
       getProducts();
       resetTB();
-      alert("Delete phone successfully  ");
+      showAlertDel("Delete phone successfully");
+      closePopUpDel();
     })
     .catch((error) => {
       alert("Xóa sản phẩm thất bại");
@@ -134,9 +135,11 @@ async function updateProduct(productId) {
 
   apiUpdateProduct(productId, product)
     .then((respone) => {
+      // debugger;
       getProducts();
       resetTB();
-      alert("Update phone successfully");
+      showAlert("Update phone successfully");
+      closePopUp();
     })
     .catch((error) => {
       alert("Cập nhật sản phẩm thất bại");
@@ -320,6 +323,42 @@ function resetTB() {
   getElement("#description").value = "";
   getElement("#type").value = "type";
 }
+
+//Alert
+function showAlert(content) {
+  let html = `
+  <div class="my-popup-custom" >
+	<span>${content}</span>
+</div>
+  `;
+  getElement(".modal-content-popup").innerHTML = html;
+  // getElement(".adminPage").innerHTML = html;
+}
+function showAlertDel(content) {
+  let html = `
+  <div class="my-popup-custom" >
+	<span>${content}</span>
+</div>
+  `;
+  // getElement(".modal-content").innerHTML += html;
+  getElement(".adminPage").innerHTML = html;
+}
+
+//Close popup
+function closePopUp() {
+  getElement(".modal-content-popup .my-popup-custom").style.display = "block";
+  setTimeout(() => {
+    return (getElement(".modal-content-popup .my-popup-custom").style.display =
+      "none");
+  }, 1000);
+}
+function closePopUpDel() {
+  getElement(".adminPage .my-popup-custom").style.display = "block";
+  setTimeout(() => {
+    return (getElement(".adminPage .my-popup-custom").style.display = "none");
+  }, 1000);
+}
+
 getProducts();
 
 //==========DOM=========
@@ -340,4 +379,7 @@ getElement("#txtSearch").addEventListener("keydown", (event) => {
 //=========Helpers==========
 function getElement(selector) {
   return document.querySelector(selector);
+}
+function getElement2(selector) {
+  return document.querySelectorAll(selector);
 }
