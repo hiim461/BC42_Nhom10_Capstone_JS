@@ -1,4 +1,4 @@
-const URL = "https://63f70b96e40e087c95866863.mockapi.io/api/N10/products";
+const URL = "https://640acb7a65d3a01f98076160.mockapi.io/products";
 
 async function apiGetProducts(searchValue) {
    return await axios({
